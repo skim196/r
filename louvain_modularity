@@ -33,7 +33,7 @@ for (m in 1:max(Mb)) {
 H <- colSums(Hnm)
 Hm <- rowSums(Hnm)
 Q0 <- (-Inf)
-bsxfun <- matrix(0, nrow = n, ncol = n)
+bsxfun <- matrix(0, nrow = n, ncol = n)        # bsxfun
 diag(bsxfun) <- 1
 
 
