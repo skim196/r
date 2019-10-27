@@ -5,10 +5,10 @@ function (A, gamma, M0)
         gamma <- 1
     }
     else {
-        gamma <- gamma
+        gamma <- gamma                # needed
     }
     if (missing(M0)) {
-        M0 <- 1:ncol(A)
+        M0 <- 1:ncol(A)               # needed
     }
     else (M0 <- M0)
     diag(A) <- 0
@@ -40,7 +40,7 @@ function (A, gamma, M0)
     Q0 <- (-Inf)
     bsxfun <- matrix(0, nrow = n, ncol = n)
     diag(bsxfun) <- 1
-    Q <- sum(diag(as.matrix(B) * bsxfun))/s
+    Q <- sum(diag(as.matrix(B) * bsxfun))/s         # Moduarity
     first_iter <- TRUE
     while (Q - Q0 > 0) {
         flag <- TRUE
