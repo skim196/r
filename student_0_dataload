@@ -1,0 +1,135 @@
+
+#--------------------------------------------------------
+#
+#        Songdo student: data loading & join
+#
+#        Soohyun Kim
+#        2019-12-11
+#
+#--------------------------------------------------------
+
+setwd("C:/Users/u/Dropbox/1_2_0_student_SK/student")
+getwd()
+
+library(dplyr)
+library(ggplot2)
+library(magrittr)       # pipe operator
+library(summarytools)
+
+
+# information data
+
+df161i <- read.csv("std_16_1_info.csv")
+df162i <- read.csv("std_16_2_info.csv")
+df171i <- read.csv("std_17_1_info.csv")
+df172i <- read.csv("std_17_2_info.csv")
+
+info.names <- c("id", "major", "year", "gender")
+
+names(df161i) <- info.names
+names(df161i)[2:3] <- paste(names(df161i)[2:3], "161", sep = ".")
+names(df162i) <- info.names
+names(df162i)[2:3] <- paste(names(df162i)[2:3], "162", sep = ".")
+names(df171i) <- info.names
+names(df171i)[2:3] <- paste(names(df171i)[2:3], "171", sep = ".")
+names(df172i) <- info.names
+names(df172i)[2:3] <- paste(names(df172i)[2:3], "172", sep = ".")
+
+
+
+# trajectory count data
+
+df161t <- read.csv("std_16_1_traj_GPA.csv")
+df162t <- read.csv("std_16_2_traj_GPA.csv")
+df171t <- read.csv("std_17_1_traj_GPA.csv")
+df172t <- read.csv("std_17_2_traj_GPA.csv")
+ct.names <- c("ct.total", "ct.dorm", "ct.lib", "ct.lec", "ct.union", "gpa")
+
+names(df161t)[1:6] <- ct.names
+names(df162t)[1:6] <- ct.names
+names(df171t)[1:6] <- ct.names
+names(df172t)[1:6] <- ct.names
+
+names(df161t)[1:6] <- paste(names(df161t)[1:6], "161", sep = ".")
+names(df162t)[1:6] <- paste(names(df162t)[1:6], "162", sep = ".")
+names(df171t)[1:6] <- paste(names(df171t)[1:6], "171", sep = ".")
+names(df172t)[1:6] <- paste(names(df172t)[1:6], "172", sep = ".")
+
+
+# survey data
+
+df16s1 <- read.csv("std_16_survey_01.csv")
+df17s1 <- read.csv("std_17_survey_01.csv")
+df16s2 <- read.csv("std_16_survey_12.csv")
+df17s2 <- read.csv("std_17_survey_12.csv")
+
+names(df16s1) <- paste("s1", names(df16s1), sep = "_")
+names(df17s1) <- paste("s1", names(df17s1), sep = "_")
+names(df16s2) <- paste("s2", names(df16s2), sep = "_")
+names(df17s2) <- paste("s2", names(df17s2), sep = "_")
+
+df16s1 <- df16s1 %>% rename(id = s1_id)
+df17s1 <- df17s1 %>% rename(id = s1_id) 
+df16s2 <- df16s2 %>% rename(id = s2_id)
+df17s2 <- df17s2 %>% rename(id = s2_id)
+
+names(df16s1)
+names(df16s2)
+names(df17s1)
+names(df17s2)
+
+
+#  2016_1_prefix-span data
+
+df161p <- read.csv("pattern_2016_1.csv", header = F)
+p.id <- t(df161p[1, -1])
+p.pattern <- paste("pfix", df161p[-1, 1], sep = ".")
+
+df161p.d <- t(df161p[-1, -1])
+dim(df161p.d)
+
+df161p <- data.frame(p.id, df161p.d)
+names(df161p) <- c("id", p.pattern)
+dim(df161p)
+str(df161p)
+
+
+
+# ======================== join data of 2016 (START) =============================
+
+
+# full join for 2016
+
+df161sub        <- df161i %>% full_join(df161t, by = "id")  # join infomation and trajectory data
+df162sub        <- df162i %>% full_join(df162t, by = "id")
+df16join        <- df161sub %>% full_join(df162sub, by = "id")
+df16join.survey <- df16join %>% full_join(df16s1, by = "id") %>% full_join(df16s2, by = "id")
+df16join.all    <- df16join.survey %>% 
+  full_join(df161p, by = "id") %>% 
+  mutate(gender  = coalesce(gender.x, gender.y)) %>% 
+  select(-gender.x, -gender.y)
+
+
+# check names
+
+names(df161sub)  # full join info & trajectory (2016_1)
+names(df162sub)  # full join info & trajectory (2016_2)
+names(df16s1)    # survey_2016_Jan
+names(df16s2)    # survey_2016_Dec
+names(df161p)    # prefix_2016_1
+names(df16join.all)
+
+
+
+# size of datsets
+
+dim(df161sub) # 2016_1
+dim(df162sub) # 2016_2
+dim(df16s1)   # survey_1
+dim(df16s2)   # survey_2
+dim(df161p)   # prefix_2016_1
+
+write.csv(df16join.all, "df16join.all.csv")
+
+# ======================== Data 2016 (END) =============================
+
