@@ -1,0 +1,71 @@
+
+#--------------------------------------------------------
+#
+#       Songdo student: EDA
+#
+#        SH Kim, TW Kim
+#        2019-12-11
+#
+#--------------------------------------------------------
+
+
+setwd("C:/Users/u/Dropbox/1_2_0_student_SK/student")
+getwd()
+
+
+library(dplyr)
+library(ggplot2)
+library(magrittr) 
+
+library(VIM)    # missing
+library(mice)   # imputation
+
+
+# csv data loading
+
+df16join.all <- read.csv("df16join.all.csv", header = TRUE)
+dim(df16join.all)
+
+
+
+# datasets for 10-feature model 
+
+satif_na <- df16join.all %>% select(s2_Q2_3, s2_Q2_4, s2_Q3_2, s2_Q7_9, s2_Q7_11, s2_Q7_16, s2_Q9_3, 
+                                    s2_Q10_1, s2_Q15_1, s2_Q16_4,s2_Q8_2)
+
+satif_comp <- satif_na  %>% na.omit()
+
+
+# missing check
+
+missing_count <- function(mydata) apply(is.na(mydata), 2, sum)
+missing_count(satif_na)
+missing_count(satif_comp)
+
+
+# Missing values pattern
+
+satif_na_a <- satif_na  
+aggr(satif_na, prop=FALSE, numbers = TRUE)
+
+
+# imputation
+
+imp <- mice(satif_na, seed = 1606)
+summary(imp)
+ls(imp)
+class(imp)
+
+
+# identify 5 data set & avaerge lm
+
+View(imp$imp)
+
+fit1 = with(imp,lm(s2_Q8_2~s2_Q2_3+s2_Q2_4+s2_Q3_2+s2_Q7_9+s2_Q7_11+s2_Q7_16+s2_Q9_3+
+                   s2_Q10_1+s2_Q15_1+s2_Q16_4))
+pooled = pool(fit1)
+summary(pooled)
+
+######################
+
+satif_comp <- complete(imp, 1) 
