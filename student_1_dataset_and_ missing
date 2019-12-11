@@ -34,11 +34,10 @@ satif_orgi <- df16join.all %>% select(s2_Q2_3, s2_Q2_4, s2_Q3_2, s2_Q7_9, s2_Q7_
                                     s2_Q10_1, s2_Q15_1, s2_Q16_4,s2_Q8_2)
 
 # satif_comp: delete missing listwise 
-satif_comp <- satif_na  %>% na.omit()
+satif_comp <- satif_orgi %>% na.omit()
 
 
 # satif_imp1: imputation
-#satif_imp1 <- 
 
 
 
