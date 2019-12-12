@@ -4,3 +4,7 @@
 install.packages("installr")
 library(installr)
 updateR()
+
+# check package update
+version
+packageStatus()
