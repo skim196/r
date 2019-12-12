@@ -1,4 +1,6 @@
 
+# check R version
+sessionInfo() 
 
 # update R version
 install.packages("installr")
