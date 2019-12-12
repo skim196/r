@@ -1,0 +1,6 @@
+
+
+# update R version
+install.packages("installr")
+library(installr)
+updateR()
