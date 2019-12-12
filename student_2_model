@@ -128,8 +128,8 @@ rmse(y_obs, yhat_step)
 
 # Lasso
 
-xx <- model.matrix(overallSatif~.-1, satif)
-x <- xx[training_idx,]
+#xx <- model.matrix(overallSatif~.-1, satif)
+#x <- xx[training_idx,]
 x <- training[, -11]
 y <- training$overallSatif
 
