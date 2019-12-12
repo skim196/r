@@ -10,3 +10,13 @@ updateR()
 # check package update
 version
 packageStatus()
+
+
+# clear console in RStudio
+cat("\014")
+
+# remove datasets in enviroment window
+rm(list=ls())
+ 
+# remove plots in RStudio
+dev.off()
