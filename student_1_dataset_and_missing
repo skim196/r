@@ -15,8 +15,6 @@ getwd()
 
 library(dplyr)
 library(ggplot2)
-library(magrittr) 
-
 library(VIM)    # missing
 library(mice)   # imputation
 
@@ -50,13 +48,11 @@ missing_count(satif_comp)
 
 
 # Missing values pattern
-
-satif_na_a <- satif_orgi  
-aggr(satif_na, prop=FALSE, numbers = TRUE)
+  
+aggr(satif_orgi, prop=FALSE, numbers = TRUE)
 
 
 # imputation
-
 imp <- mice(satif_orgi, seed = 1606)
 summary(imp)
 
@@ -92,6 +88,6 @@ dim(satif_imp1)
 
 
 write.csv(satif_orgi, "satif_orgi.csv")
-write.csv(satif_orgi, "satif_comp.csv")
-write.csv(satif_orgi, "satif_imp1.csv")
+write.csv(satif_comp, "satif_comp.csv")
+write.csv(satif_imp1, "satif_imp1.csv")
 
