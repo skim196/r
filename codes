@@ -20,3 +20,31 @@ rm(list=ls())
  
 # remove plots in RStudio
 dev.off()
+
+
+# Source 창에서의 단축키
+
+1.  코드 실행
+해당 라인에 커서를 두고 ctrl + enter
+
+
+2.  소스 저장
+ctrl + s
+
+3.  주석 처리/해제
+해당 라인에 커서를 두고 ctrl + shift + c
+
+4. 함수 또는 R 소스파일의 내용보기
+확인하려는 함수 또는 R 소스파일에 커서를 올리고 F2
+
+
+# Console 창에서의 단축키
+
+1.  코드 실행
+enter 
+
+2.  실행됐던 코드 지우기
+ctrl + l
+
+
+출처: http://kkokkilkon.tistory.com/7 [꼬낄콘의 분석일지]
